@@ -1,5 +1,5 @@
 /* =========================================================
-   LETÍCIA CABRAL — XV ANOS
+   LETICIA CABRAL — XV ANOS
    JAVASCRIPT
 ========================================================= */
 
@@ -657,28 +657,27 @@ if (rsvpForm) {
 
             /* ============ SALVAR OS DADOS ============ */
 
-            try {
+           const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzBEEO0lzMb2gKCjeajhwMuayKqKyB_eNx33h7YdLIzXWZAvYfPwWfNj2k79WKqB69k4Q/exec";
 
-                const existing =
-                    JSON.parse(
-                        localStorage.getItem("rsvps") || "[]"
-                    );
+const formData = new URLSearchParams();
 
-                existing.push(rsvpData);
+formData.append("name", rsvpData.name);
+formData.append("guests", rsvpData.guests);
+formData.append("attendance", rsvpData.attendance);
+formData.append("message", rsvpData.message);
+formData.append("date", rsvpData.date);
 
-                localStorage.setItem(
-                    "rsvps",
-                    JSON.stringify(existing)
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Não foi possível salvar a confirmação localmente:",
-                    error
-                );
-
-            }
+fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: formData
+}).catch(error => {
+    console.error(
+        "Erro ao enviar confirmação:",
+        error
+    );
+});
 
             /* =========================================== */
 
