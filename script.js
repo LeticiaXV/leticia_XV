@@ -699,13 +699,27 @@ fetch(GOOGLE_SCRIPT_URL, {
             }
 
 
-            if (rsvpSuccess) {
+           if (rsvpSuccess) {
 
-                if (rsvpSuccessName) {
+                const titleElement = document.getElementById("rsvpSuccessTitle");
+                const messageElement = document.getElementById("rsvpSuccessMessage");
 
-                    rsvpSuccessName.textContent =
-                        name || "";
-
+                // Personaliza a mensagem se a pessoa respondeu "Não"
+                if (rsvpData.attendance === "Não") {
+                    if (titleElement) {
+                        titleElement.textContent = "Resposta registrada!";
+                    }
+                    if (messageElement) {
+                        messageElement.innerHTML = `Poxa, que pena que você não poderá ir, <span id="rsvpSuccessName">${name || ""}</span>! Sentiremos sua falta.`;
+                    }
+                } else {
+                    // Mensagem padrão para "Sim"
+                    if (titleElement) {
+                        titleElement.textContent = "Presença confirmada!";
+                    }
+                    if (messageElement) {
+                        messageElement.innerHTML = `Obrigado por responder, <span id="rsvpSuccessName">${name || ""}</span>! Aguardamos você para celebrar esse momento especial.`;
+                    }
                 }
 
                 rsvpForm.style.display = "none";
@@ -719,7 +733,7 @@ fetch(GOOGLE_SCRIPT_URL, {
 
             } else {
 
-                alert("Presença confirmada! Obrigado por responder.");
+                alert(rsvpData.attendance === "Não" ? "Resposta registrada com sucesso!" : "Presença confirmada! Obrigado por responder.");
 
             }
 
